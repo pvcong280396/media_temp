@@ -1,0 +1,46 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+
+Future<dynamic> getMethod(
+    {required String url, Map<String, dynamic>? params}) async {
+  try {
+    final String token = '';
+    final String language = '';
+    Uri uri = Uri.parse(
+      url,
+    ).replace(queryParameters: params);
+
+    final headers = {
+      HttpHeaders.authorizationHeader: token,
+      "language": language,
+    };
+    final res = await http.get(uri, headers: headers);
+    return jsonDecode(res.body);
+  } catch (e) {
+    print('getMethod err: $e');
+    return null;
+  }
+}
+
+class ModelTest {
+  int? userId;
+  int? id;
+  String? title;
+
+  ModelTest({this.userId, this.id, this.title});
+
+  ModelTest.fromJson(Map<String, dynamic> json) {
+    userId = json['userId'];
+    id = json['id'];
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['userId'] = this.userId;
+    data['id'] = this.id;
+    data['title'] = this.title;
+    return data;
+  }
+}
